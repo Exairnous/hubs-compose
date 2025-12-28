@@ -53,6 +53,7 @@ certificates, you can visit https://hubs.local:4000 from your browser.
 
   - On Windows, your plain-text `hosts` file is probably located at `C:\Windows\System32\drivers\etc\hosts`.
 5. Initialize the services with `bin/init`
+  - If you run into any issues with [socket timeouts](https://github.com/npm/cli/issues/3078), you can add the `-f` option to `bin/init` so that it will retry npm ci until it succeeds.  Warning: this may result in an infinite loop if other errors are encountered, so watch carefully and be prepared to cancel (Ctrl+C) `bin/init`.
 
 ### Orchestration
 
@@ -63,6 +64,13 @@ certificates, you can visit https://hubs.local:4000 from your browser.
 * Restore all services to a fresh state with `bin/reset`
 * Update all service source code with `bin/services-update`
 * Update service dependencies with `bin/init`
+  - Which services to updated can be specified by the following names.
+    - `reticulum`
+    - `dialog`
+    - `hubs-admin`
+    - `hubs-client`
+    - `hubs` (does both `hubs-admin` and `hubs-client`)
+    - `spoke`
 
 [^2]: Requires `tmux` and `watch` program files in the user’s path
 
@@ -104,6 +112,42 @@ problem.
 
 If problems persist after these steps, consider reaching out for community support
 or filing an issue in the repository.
+
+## bin/init exit codes
+
+* `0` Success.
+* `1` Reticulum failed to initialize.
+* `2` Dialog failed to initialize.
+* `3` Reticulum and Dialog failed to initialize.
+* `4` Hubs Admin failed to initialize.
+* `5` Reticulum and Hubs Admin failed to initialize.
+* `6` Dialog and Hubs Admin failed to initialize.
+* `7` Reticulum, Dialog, and Hubs Admin failed to initialize.
+* `8` Hubs Client failed to initialize.
+* `9` Reticulum and Hubs Client failed to initialize.
+* `10` Dialog and Hubs Client failed to initialize.
+* `11` Reticulum, Dialog, and Hubs Client failed to initialize.
+* `12` Hubs Admin and Hubs Client failed to initialize.
+* `13` Reticulum, Hubs Admin, and Hubs Client failed to initialize.
+* `14` Dialog, Hubs Admin, and Hubs Client failed to initialize.
+* `15` Reticulum, Dialog, Hubs Admin, and Hubs Client failed to initialize.
+* `16` Spoke failed to initialize.
+* `17` Reticulum and Spoke failed to initialize.
+* `18` Dialog and Spoke failed to initialize.
+* `19` Reticulum, Dialog, and Spoke failed to initialize.
+* `20` Hubs Admin and Spoke failed to initialize.
+* `21` Reticulum, Hubs Admin, and Spoke failed to initialize.
+* `22` Dialog, Hubs Admin, and Spoke failed to initialize.
+* `23` Reticulum, Dialog, Hubs Admin, and Spoke failed to initialize.
+* `24` Hubs Client and Spoke failed to initialize.
+* `25` Reticulum, Hubs Client, and Spoke failed to initialize.
+* `26` Dialog, Hubs Client, and Spoke failed to initialize.
+* `27` Reticulum, Dialog, Hubs Client, and Spoke failed to initialize.
+* `28` Hubs Admin, Hubs Client, and Spoke failed to initialize.
+* `29` Reticulum, Hubs Admin, Hubs Client, and Spoke failed to initialize.
+* `30` Dialog, Hubs Admin, Hubs Admin, Hubs Client, and Spoke failed to initialize.
+* `31` Reticulum, Dialog, Hubs Admin, Hubs Client, and Spoke failed to initialize.
+
 
 ### Command Execution
 

@@ -2,6 +2,25 @@
 checksum='package-lock.sha512'
 
 if ! sha512sum --check --status $checksum 2>/dev/null; then
-  npm ci
+#   npm config set fetch-retries 100
+#   npm config set fetch-retry-mintimeout 5000
+#   npm config set fetch-timeout 7200000
+#npm config set fetch-retry-maxtimeout 120000
+#npm config set fetch-retry-mintimeout 60000
+  npm config set fetch-timeout 1800000
+#npm config set fetch-retry-factor 10
+  npm config set fetch-retries 100
+#npm config set registry http://registry.npmjs.org/
+#npm config set strict-ssl false
+#npm config set maxsockets 5
+  npm config list -l
+#npm cache clean
+  npm ci --loglevel verbose
+  exitcode="$?"
+  while [ "$exitcode" -eq 1 ]; do
+  # this makes it work for slow/spotty connections that run into this bug: https://github.com/npm/cli/issues/3078 by just rerunning the command over and over until all the packages are downloaded
+    npm ci --loglevel verbose
+    exitcode="$?"
+  done
   sha512sum package-lock.json > $checksum
 fi
